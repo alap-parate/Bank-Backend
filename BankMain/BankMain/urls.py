@@ -15,7 +15,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     
     # Authentication Routes
-    path('api/auth/activate/<uid>/<token>', UserActivationView.as_view({'get': 'activation'}), name='activation'),
     path('api/auth/',include('user_master.urls')),
     path('api/auth/',include('djoser.urls')),
     path('api/auth/',include('djoser.urls.jwt')),

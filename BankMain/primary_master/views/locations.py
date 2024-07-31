@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from ..models.locations import State, District, Taluka
-from ..serializers.locations import DistrictSerializer, StateSerializer, TalukaSerializer
+from ..models.locations import State, District, Taluka, City, Zone
+from ..serializers.locations import DistrictSerializer, StateSerializer, TalukaSerializer, CitySerializer, ZoneSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters
 
@@ -23,3 +23,17 @@ class TalukaViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ['name']
     filterset_fields = ['district_id']
+    
+class CityViewSet(viewsets.ModelViewSet):
+    queryset = City.objects.all()
+    serializer_class = CitySerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    search_fields = ['name']
+    filterset_fields = ['state_id']
+    
+class ZoneViewSet(viewsets.ModelViewSet):
+    queryset = Zone.objects.all()
+    serializer_class = ZoneSerializer
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    search_fields = ['name']
+    filterset_fields = ['state_id']

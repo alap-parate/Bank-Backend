@@ -19,3 +19,17 @@ class Taluka(models.Model):
     
     def __str__(self):
         return f"{self.name}, {self.district.name}"
+    
+class City(models.Model):
+    name = models.CharField(max_length=255)
+    state = models.ForeignKey(State, on_delete=models.PROTECT, related_name='cities')
+  
+    def __str__(self):
+        return f"{self.name}, {self.state.name}"
+    
+class Zone(models.Model):
+    name = models.CharField(max_length=255)
+    state = models.ForeignKey(State, on_delete=models.PROTECT, related_name='zones')
+  
+    def __str__(self):
+        return f"{self.name}, {self.state.name}"

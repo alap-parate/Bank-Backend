@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'rest_framework',
+    'corsheaders',
     'drf_spectacular',
     'rest_framework_simplejwt',
     "rest_framework_simplejwt.token_blacklist",
@@ -63,8 +64,8 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT  = {
     # 'AUTH_HEADER_TYPES' : ('JWT'),
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "REFRESH_TOKEN_LIFETIME": timedelta(hours=16),
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
     'ROTATE_REFRESH_TOKENS': True, 
     'ROTATE_ACCESS_TOKENS':True,
@@ -108,6 +109,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    'http://*',
+    'https://*'
 ]
 
 ROOT_URLCONF = 'BankMain.urls'
@@ -142,10 +150,10 @@ DATABASES = {
         'USER': 'root',
         'PASSWORD': 'root',
         'HOST': 'localhost',
-        'PORT': 3307
+        'PORT': 3307,
+        'CONN_MAX_AGE':500
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
