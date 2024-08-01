@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class VehicleMaster(models.Model):
-    gl_id = models.ForeignKey(GL_Master)
+    gl_id = models.ForeignKey(GL_Master,on_delete=models.PROTECT)
     acc_no = models.IntegerField()
     v_type = models.CharField(max_length=255)
     v_year = models.DateField()

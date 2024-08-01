@@ -7,16 +7,16 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class RecurringDepositMaster(models.Model):
-    br_id = models.ForeignKey(BranchMaster)
-    gl_id = models.ForeignKey(GL_Master)
+    br_id = models.ForeignKey(BranchMaster,on_delete=models.PROTECT)
+    gl_id = models.ForeignKey(GL_Master,on_delete=models.PROTECT)
     acc_no = models.IntegerField()
-    instamnt = models.DecimalField()
+    instamnt = models.DecimalField(decimal_places=2, max_digits=10)
     opdate = models.DateField()
-    asondate = models.IntegerField()
+    asondate = models.DecimalField(decimal_places=2, max_digits=10)
     month = models.IntegerField()
     day = models.IntegerField()
-    intrate = models.DecimalField()
-    dueamnt = models.DecimalField()
+    intrate = models.DecimalField(decimal_places=2, max_digits=10)
+    dueamnt = models.DecimalField(decimal_places=2, max_digits=10)
     cert_no = models.IntegerField()
     agcd = models.IntegerField()
     instruction = models.TextField(null=True)
@@ -35,4 +35,4 @@ class RecurringDepositMaster(models.Model):
     
     # created/updated
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(User)
+    created_by = models.ForeignKey(User,on_delete=models.PROTECT)

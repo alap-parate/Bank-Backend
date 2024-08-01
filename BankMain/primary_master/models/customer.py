@@ -1,6 +1,6 @@
 from django.db import models
 from .branch import BranchMaster
-from .locations import State,Zone,District,Taluka
+from .locations import State,Zone,District,Taluka,City
 from django.contrib.auth import get_user_model
 from .nominee import Nominee
 
@@ -16,10 +16,11 @@ class Customer(models.Model):
         ('ST','ST'),
         ('SC','SC'),
         ('OBC','OBC'),
-        ('EWS','EWS')
+        ('EWS','EWS'),
+        ('OPEN','OPEN'),
     )
     
-    br_id = models.ForeignKey(BranchMaster,on_delete=models.PROTECT,related_name='branch')
+    br_id = models.ForeignKey(BranchMaster,on_delete=models.PROTECT)
     courtesy = models.CharField(max_length=10)
     f_name = models.CharField(max_length=255)
     m_name = models.CharField(max_length=255)
@@ -34,11 +35,11 @@ class Customer(models.Model):
     addr1 = models.CharField(max_length=255)
     addr2 = models.CharField(max_length=255)
     addr3 = models.CharField(max_length=255,null=True)
-    state = models.ForeignKey(State,on_delete=models.PROTECT,related_name='state')
-    district = models.ForeignKey(District,on_delete=models.PROTECT,related_name='district')
-    taluka = models.ForeignKey(Taluka,on_delete=models.PROTECT,related_name='taluka')
-    zone = models.ForeignKey(Zone,on_delete=models.PROTECT,related_name='zone')
-    city = models.CharField(max_length=255)
+    state = models.ForeignKey(State,on_delete=models.PROTECT)
+    district = models.ForeignKey(District,on_delete=models.PROTECT, related_name='cust_district')
+    taluka = models.ForeignKey(Taluka,on_delete=models.PROTECT, related_name='cust_taluka')
+    city = models.ForeignKey(City, on_delete=models.PROTECT, related_name='cust_city')
+    zone = models.ForeignKey(Zone,on_delete=models.PROTECT, related_name='cust_zone')
     pincode = models.CharField(max_length=6)
     
     company_name = models.CharField(max_length=255)
@@ -50,7 +51,7 @@ class Customer(models.Model):
     oaddr1 = models.CharField(max_length=255)
     oaddr2 = models.CharField(max_length=255)
     oaddr3 = models.CharField(max_length=255, null=True)
-    ocity = models.CharField(max_length=255)
+    ocity = models.TextField()
     ophone1 = models.CharField(max_length=10)
     ophone2 = models.CharField(max_length=10, null=True)
     gstno = models.CharField(max_length=15, null=True)
@@ -59,10 +60,10 @@ class Customer(models.Model):
     paddr1 = models.CharField(max_length=255)
     paddr2 = models.CharField(max_length=255)
     paddr3 = models.CharField(max_length=255, null=True)
-    pstate = models.ForeignKey(State,on_delete=models.PROTECT,related_name='state')
-    pdistrict = models.ForeignKey(District,on_delete=models.PROTECT,related_name='district')
-    ptaluka = models.ForeignKey(Taluka,on_delete=models.PROTECT,related_name='taluka')
-    pcity = models.CharField(max_length=255)
+    pstate = models.ForeignKey(State,on_delete=models.PROTECT, related_name='pcust_state')
+    pdistrict = models.ForeignKey(District,on_delete=models.PROTECT, related_name='pcust_district')
+    ptaluka = models.ForeignKey(Taluka,on_delete=models.PROTECT, related_name='pcust_taluka')
+    pcity = models.ForeignKey(City, on_delete=models.PROTECT, related_name='pcust_city')
     ppincode = models.CharField(max_length=6)
     birth_date = models.DateField()
     
@@ -84,7 +85,7 @@ class Customer(models.Model):
     
     # Account Confirmation 
     confirm = models.BooleanField(default=False)
-    confirm_by = models.ForeignKey(User,null=True)
+    confirm_by = models.ForeignKey(User,null=True,on_delete=models.PROTECT,related_name='customer_confirm')
     confirm_time = models.DateTimeField(null=True)
     
     # Account Freeze
@@ -94,8 +95,8 @@ class Customer(models.Model):
     # create/update time and user
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    created_by = models.ForeignKey(User)
-    updated_by = models.ForeignKey(User, null=True)
+    created_by = models.ForeignKey(User,on_delete=models.PROTECT,related_name='customer_created')
+    updated_by = models.ForeignKey(User, null=True,on_delete=models.PROTECT,related_name='customer_updated')
     
     # Account merge
     merge_to = models.IntegerField(default=0)

@@ -7,12 +7,12 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class SavingDepositMaster(models.Model):
-    br_id = models.ForeignKey(BranchMaster)
-    gl_id = models.ForeignKey(GL_Master)
+    br_id = models.ForeignKey(BranchMaster,on_delete=models.PROTECT)
+    gl_id = models.ForeignKey(GL_Master,on_delete=models.PROTECT)
     acc_no = models.IntegerField()
     opdate = models.DateField()
     agcd = models.IntegerField()
-    lockamnt = models.DecimalField()
+    lockamnt = models.DecimalField(decimal_places=2, max_digits=10)
     instruction = models.TextField(null=True)
     intro_id = models.IntegerField()
     
@@ -27,5 +27,5 @@ class SavingDepositMaster(models.Model):
     nom_pincode = models.CharField(max_length=6)
     
     close_date = models.DateField(null=True)
-    created_by = models.ForeignKey(User)
+    created_by = models.ForeignKey(User,on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True)

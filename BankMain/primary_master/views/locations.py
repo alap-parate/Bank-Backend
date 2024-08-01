@@ -29,7 +29,7 @@ class CityViewSet(viewsets.ModelViewSet):
     serializer_class = CitySerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ['name']
-    filterset_fields = ['state_id']
+    filterset_fields = ['district_id','taluka_id']
     
 class ZoneViewSet(viewsets.ModelViewSet):
     queryset = Zone.objects.all()

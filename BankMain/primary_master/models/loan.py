@@ -11,24 +11,24 @@ dm = (
     ('day','day')
 )
 
-class FixedDepositMaster(models.Model):
-    br_id = models.ForeignKey(BranchMaster)
-    gl_id = models.ForeignKey(GL_Master)
+class LoanMaster(models.Model):
+    br_id = models.ForeignKey(BranchMaster,on_delete=models.PROTECT)
+    gl_id = models.ForeignKey(GL_Master,on_delete=models.PROTECT)
     acc_no = models.IntegerField()
     loan_purpose = models.TextField()
-    opamnt = models.DecimalField()
+    opamnt = models.DecimalField(decimal_places=2, max_digits=10)
     opdate = models.DateField()
     meetdate = models.DateField()
     inst_from = models.DateField()
     no_of_inst = models.IntegerField()
     dM = models.CharField(max_length=5, choices=(dm))
-    intrate = models.DecimalField()
-    intamnt = models.DecimalField()
+    intrate = models.DecimalField(decimal_places=2, max_digits=10)
+    intamnt = models.DecimalField(decimal_places=2, max_digits=10)
     sro_no = models.IntegerField()
     agcd = models.IntegerField()
     instruction = models.TextField(null=True)
-    mortgage_detail = models.TextChoices()
-    valuation = models.DecimalField()
+    mortgage_detail = models.TextField()
+    valuation = models.DecimalField(decimal_places=2, max_digits=10)
     mortage_date = models.DateField()
     guarantor_1 = models.IntegerField(null=True)
     guarantor_2 = models.IntegerField(null=True)
@@ -52,4 +52,4 @@ class FixedDepositMaster(models.Model):
     
     # created/updated
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(User)
+    created_by = models.ForeignKey(User, on_delete=models.PROTECT)

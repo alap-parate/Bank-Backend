@@ -7,8 +7,8 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 class ShareMaster(models.Model):
-    br_id = models.ForeignKey(BranchMaster)
-    gl_id = models.ForeignKey(GL_Master)
+    br_id = models.ForeignKey(BranchMaster,on_delete=models.PROTECT)
+    gl_id = models.ForeignKey(GL_Master,on_delete=models.PROTECT)
     acc_no = models.IntegerField()
     appdate = models.DateField()
     opdate = models.DateField()
@@ -27,4 +27,4 @@ class ShareMaster(models.Model):
     
     # created/updated
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(User)
+    created_by = models.ForeignKey(User, on_delete=models.PROTECT)
